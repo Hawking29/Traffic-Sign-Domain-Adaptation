@@ -27,13 +27,12 @@ To stress-test the model without risking a real car, I built a pipeline to gener
 * **Process:** Applied random Gaussian Noise, Motion Blur (kernel size 5-9), and Brightness Reduction (30-70%).
 * **Output:** 39 "Nightmare" scenarios to validate model reliability.
 
-*(If you uploaded a screenshot, it will appear here once you fix the link below)*
-![Results Chart](results_chart.png)
+![Results Chart](Results_chart.png)
 
 ## 🧠 Lessons Learned
 * **Resolution Matters:** Increasing input size from 32x32 to 75x75 was critical for MobileNet feature extraction.
 * **The Domain Gap:** Transfer learning is not a magic wand. Regional differences (Text vs. Symbols) require locally curated datasets.
 
 ## 👤 Author
-**[Your Name]**
+**[Abhirup Chattopadhyay]**
 *Electrical Engineering Student, Jalpaiguri Government Engineering College*
