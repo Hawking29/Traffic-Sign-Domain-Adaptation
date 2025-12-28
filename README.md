@@ -65,13 +65,3 @@ x = Dropout(0.5)(x)          # Aggressive Dropout to prevent memorization
 x = Dense(256, activation='relu')(x)
 x = Dropout(0.5)(x)          # Second Dropout layer for redundancy
 predictions = Dense(43, activation='softmax')(x)
-
-![Latest Results](Results_v2_1.png)
-
-## 🧠 Lessons Learned
-* **Data Quality is King:** Switching from compressed pickle files to the raw Kaggle dataset gave a 7% accuracy boost immediately.
-* **Aspect Ratio Matters:** Real-world cameras see squashed images. Pre-processing must include "Smart Cropping" to preserve geometry.
-
-## 👤 Author
-**[Abhirup Chattopadhyay]**
-*Electrical Engineering Student, Jalpaiguri Government Engineering College*
