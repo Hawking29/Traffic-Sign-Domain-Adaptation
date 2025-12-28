@@ -9,7 +9,7 @@ This project builds a robust Traffic Sign Recognition system capable of identify
 ## 🏆 Key Achievements
 * **Accuracy:** Improved from **84%** (v1) to **91.56%** (v2).
 * **Architecture:** MobileNetV2 (Pre-trained on ImageNet, Fine-Tuned for 43 classes).
-* **Engineering Fixes:** * Solved "Red Circle Bias" where the model confused *No Vehicles* with *Speed Limits*.
+* **Engineering Fixes:**  Solved "Red Circle Bias" where the model confused *No Vehicles* with *Speed Limits*.
     * Implemented "Smart Cropping" to fix aspect-ratio distortion on digital inputs.
     * Used Kaggle API for high-speed cloud data pipeline.
 
