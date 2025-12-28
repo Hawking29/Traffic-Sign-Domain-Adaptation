@@ -29,7 +29,7 @@ This project builds a robust Traffic Sign Recognition system capable of identify
 In v1, the model consistently misidentified the "No Vehicles" sign as a "Speed Limit" (Class 1) because it prioritized the red circle shape over the inner symbol. 
 By upgrading to high-res (75x75) inputs and unfreezing the MobileNet layers, the v2 model correctly identifies the car symbol (Class 15).
 
-![Latest Results](Results_v2.png)
+![Latest Results](Results_v2_1.png)
 
 ## 🧠 Lessons Learned
 * **Data Quality is King:** Switching from compressed pickle files to the raw Kaggle dataset gave a 7% accuracy boost immediately.
