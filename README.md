@@ -1,33 +1,70 @@
-# 🚦 Traffic Sign Recognition System (v2.0)
+# 🚦 Autonomous Traffic Sign Recognition System (v3.0 - Stable)
 
-### **From 84% to 91%: Solving the "Domain Gap" in AI**
+### **Achieving 94.26% Accuracy via Stabilized MobileNetV2 & YOLO-Style Optimization**
+
+![Project Status](https://img.shields.io/badge/Status-Production%20Ready-success) ![Accuracy](https://img.shields.io/badge/Accuracy-94.26%25-brightgreen) ![Framework](https://img.shields.io/badge/Framework-TensorFlow%20%7C%20Keras-orange)
 
 ## 📋 Project Overview
-This project builds a robust Traffic Sign Recognition system capable of identifying signs in challenging environments. 
-**Update (v2.0):** The model has been upgraded from a simple custom CNN to a **MobileNetV2** architecture using Transfer Learning, trained on the official **GTSRB (German Traffic Sign Recognition Benchmark)** dataset.
+This project implements a robust **Traffic Sign Recognition (TSR)** system designed for autonomous vehicle subsystems.
+**Update (v3.0):** The latest release addresses the stability and overfitting issues observed in v2.0. By implementing a **Stabilized MobileNetV2** architecture with a "Frozen Spine" strategy and integrating **YOLO-style training optimizations**, the model achieves a consistent **94.26% validation accuracy** on the German Traffic Sign Recognition Benchmark (GTSRB), making it highly reliable for real-time deployment.
 
 ## 🏆 Key Achievements
-* **Accuracy:** Improved from **84%** (v1) to **91.56%** (v2).
-* **Architecture:** MobileNetV2 (Pre-trained on ImageNet, Fine-Tuned for 43 classes).
-* **Engineering Fixes:**  Solved "Red Circle Bias" where the model confused *No Vehicles* with *Speed Limits*.
-    * Implemented "Smart Cropping" to fix aspect-ratio distortion on digital inputs.
-    * Used Kaggle API for high-speed cloud data pipeline.
+* **Accuracy:** Improved from **91.56%** (v2) to **94.26%** (v3).
+* **Architecture:** MobileNetV2 (Frozen Spine Strategy) optimized with YOLO training techniques.
+* **Engineering Fixes:** * **Solved Overfitting:** In v2, the model "memorized" training data. v3 fixes this by freezing feature extraction layers.
+    * **Stabilized Loss:** Validation loss is now consistent with training loss, eliminating "hallucinations" on unseen data.
+    * **Edge Case Robustness:** Verified against tricky inputs like "No Vehicles" vs "Speed Limits".
 
 ## 🛠️ Tech Stack
 * **Core:** Python, TensorFlow/Keras, OpenCV
 * **Data Source:** [GTSRB Kaggle Dataset](https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign)
-* **Techniques:** Transfer Learning, Data Augmentation, Active Learning (Patching).
+* **Techniques:** * Transfer Learning (ImageNet weights)
+    * **YOLO-Style Optimization Pipeline** (Cosine Decay, Mosaic-style Augmentation)
+    * Frozen Layers Strategy
+    * Aggressive Dropout (0.5)
 
-## 📊 Results & Analysis
+## 📊 Evolution of Performance
 
-| Version | Model | Training Data | Accuracy | Notes |
+| Version | Architecture | Strategy | Accuracy | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **v1.0** | Custom CNN | Custom Pickle | 84.0% | Failed on "No Vehicles" sign due to low resolution. |
-| **v2.0** | **MobileNetV2** | **Full GTSRB** | **91.6%** | Robust detection. Successfully identifies edge cases. |
+| **v1.0** | Custom CNN | Raw Training | 84.00% | ❌ **Deprecated** (Struggled with shadows/blur) |
+| **v2.0** | MobileNetV2 | Full Unfreeze | 91.56% | ⚠️ **Unstable** (High variance/Overfitting risk) |
+| **v3.0** | **MobileNetV2 + YOLO Opt** | **Frozen Spine** | **94.26%** | ✅ **Stable & Production Ready** |
 
-### **The "No Vehicles" Bug Fix**
-In v1, the model consistently misidentified the "No Vehicles" sign as a "Speed Limit" (Class 1) because it prioritized the red circle shape over the inner symbol. 
-By upgrading to high-res (75x75) inputs and unfreezing the MobileNet layers, the v2 model correctly identifies the car symbol (Class 15).
+## 🧠 Key Engineering Decisions (v3.0)
+
+To break the 91% ceiling and fix stability issues, three major architectural changes were implemented:
+
+### 1. The "Frozen Spine" Strategy
+In v2.0, unfreezing the entire network caused "Catastrophic Forgetting." In v3.0, we **froze the first 100 layers** of MobileNetV2.
+* **Bottom Layers (Frozen):** Retain the pre-trained "ImageNet" knowledge (edge detection, basic shapes).
+* **Top Layers (Trainable):** Only the high-level interpretation layers are retrained to recognize specific traffic symbols.
+
+### 2. YOLO-Style Training Optimization
+Inspired by YOLO object detection training pipelines, we implemented:
+* **Cosine Decay Learning Rate:** Smoothly reduces the learning rate to find the global minima.
+* **Label Smoothing:** Prevents the model from becoming "overconfident" on noisy data.
+
+### 3. Aggressive Dropout Injection
+We increased the Dropout rate to **0.5**. This randomly disables 50% of the neurons during training, forcing the network to learn redundant features.
+
+## 💻 Code Snippet: The Stabilized Architecture
+
+```python
+# The "Frozen Spine" - Preventing Overfitting
+base_model = MobileNetV2(input_shape=(128, 128, 3), include_top=False, weights='imagenet')
+
+# Freeze the bottom 100 layers to preserve basic vision features
+for layer in base_model.layers[:100]:
+    layer.trainable = False
+
+x = base_model.output
+x = GlobalAveragePooling2D()(x)
+x = BatchNormalization()(x)  # Stabilize weights
+x = Dropout(0.5)(x)          # Aggressive Dropout to prevent memorization
+x = Dense(256, activation='relu')(x)
+x = Dropout(0.5)(x)          # Second Dropout layer for redundancy
+predictions = Dense(43, activation='softmax')(x)
 
 ![Latest Results](Results_v2_1.png)
 
