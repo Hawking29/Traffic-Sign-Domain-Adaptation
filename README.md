@@ -18,7 +18,7 @@ This project implements a robust **Traffic Sign Recognition (TSR)** system desig
 ## 🛠️ Tech Stack
 * **Core:** Python, TensorFlow/Keras, OpenCV
 * **Data Source:** [GTSRB Kaggle Dataset](https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign)
-* **Techniques:** * Transfer Learning (ImageNet weights)
+* **Techniques:**  Transfer Learning (ImageNet weights)
     * **YOLO-Style Optimization Pipeline** (Cosine Decay, Mosaic-style Augmentation)
     * Frozen Layers Strategy
     * Aggressive Dropout (0.5)
@@ -47,6 +47,11 @@ Inspired by YOLO object detection training pipelines, we implemented:
 
 ### 3. Aggressive Dropout Injection
 We increased the Dropout rate to **0.5**. This randomly disables 50% of the neurons during training, forcing the network to learn redundant features.
+
+### 👤 Author
+[Abhirup Chattopadhyay] 
+Electrical Engineering Student, Jalpaiguri Government Engineering College
+
 
 ## 💻 Code Snippet: The Stabilized Architecture
 
